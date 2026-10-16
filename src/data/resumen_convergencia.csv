@@ -1,4 +1,4 @@
-funcion,metodo,iteraciones,raiz,error,estado
+funcion,metodo,iteraciones,raiz,error_final,estado
 x^3 - x - 2,biseccion,20,1.5213804244995117,7.176950020948425e-07,convergió
 x^3 - x - 2,falsa_posicion,12,1.5213794617901568,2.450143528065496e-07,convergió
 x^3 - x - 2,punto_fijo,7,1.5213796792714414,2.753306826974722e-08,convergió
@@ -31,7 +31,7 @@ cos(x) - x,newton,3,0.7390851339208068,7.060491080679299e-10,convergió
 cos(x) - x,newton_mejorado,3,0.7390851321653727,1.0493849122994447e-09,convergió
 sqrt(x) - cos(x),biseccion,20,0.641714382171631,1.129919835474169e-08,convergió
 sqrt(x) - cos(x),falsa_posicion,4,0.6417138391748604,5.316975723035355e-07,convergió
-sqrt(x) - cos(x),punto_fijo,100,0.6399108034541754,0.001803567418257268,no convergió
+sqrt(x) - cos(x),punto_fijo,13,0.6417136881233925,6.827490401928316e-07,convergió
 sqrt(x) - cos(x),secante,3,0.6417143705771605,2.9527214007174507e-10,convergió
 sqrt(x) - cos(x),newton,2,0.641714866792004,4.959195712972431e-07,convergió
 sqrt(x) - cos(x),newton_mejorado,2,0.6417142562525041,1.1461992854844283e-07,convergió

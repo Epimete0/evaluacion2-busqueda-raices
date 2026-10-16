@@ -113,7 +113,7 @@ def main():
             historiales[(funcion["nombre"], metodo)] = historial
     with open(os.path.join(CARPETA_DATOS, "resumen_convergencia.csv"), "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
-        escritor.writerow(["funcion", "metodo", "iteraciones", "raiz", "error", "estado"])
+        escritor.writerow(["funcion", "metodo", "iteraciones", "raiz", "error_final", "estado"])
         escritor.writerows(resumen)
 
     for indice, funcion in enumerate(lista_funciones):
