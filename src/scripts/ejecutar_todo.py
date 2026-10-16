@@ -1,124 +1,122 @@
 import csv
 import os
-import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-sys.path.insert(0, os.path.dirname(__file__))
 from funciones import funciones
 from metodos import biseccion, falsa_posicion, punto_fijo, secante, newton, newton_mejorado
 
-BASE = os.path.dirname(os.path.dirname(__file__))
-DATOS = os.path.join(BASE, "data")
-IMAGENES = os.path.join(BASE, "assets")
-TOL = 1e-6
-MAX_ITER = 100
+CARPETA_SRC = os.path.dirname(os.path.dirname(__file__))
+CARPETA_DATOS = os.path.join(CARPETA_SRC, "data")
+CARPETA_GRAFICOS = os.path.join(CARPETA_SRC, "assets")
+TOLERANCIA = 1e-6
+MAX_ITERACIONES = 100
 METODOS = ["biseccion", "falsa_posicion", "punto_fijo", "secante", "newton", "newton_mejorado"]
 
 
 def raiz_real(funcion):
-    f = funcion["f"]
+    calcular = funcion["funcion"]
     if funcion["nombre"] == "(x - 2)^2":
         return 2.0
     a, b = funcion["a"], funcion["b"]
-    for i in range(1000):
+    for iteracion in range(1000):
         medio = (a + b) / 2
-        if abs(f(medio)) < 1e-12 or abs(b - a) < 1e-12:
+        if abs(calcular(medio)) < 1e-12 or abs(b - a) < 1e-12:
             return medio
-        if f(a) * f(medio) < 0:
+        if calcular(a) * calcular(medio) < 0:
             b = medio
         else:
             a = medio
     return medio
 
 
-def ejecutar_metodo(metodo, funcion, a=None, b=None, x0=None, x1=None):
-    f = funcion["f"]
+def ejecutar_metodo(metodo, datos_funcion, a=None, b=None, inicio=None, segundo_inicio=None):
+    calcular = datos_funcion["funcion"]
     if metodo == "biseccion":
         if a is None or b is None:
             print("Bisección no aplica: función sin intervalo")
             return []
-        return biseccion(f, a, b, TOL, MAX_ITER)
+        return biseccion(calcular, a, b, TOLERANCIA, MAX_ITERACIONES)
     if metodo == "falsa_posicion":
         if a is None or b is None:
             print("Falsa posición no aplica: función sin intervalo")
             return []
-        return falsa_posicion(f, a, b, TOL, MAX_ITER)
+        return falsa_posicion(calcular, a, b, TOLERANCIA, MAX_ITERACIONES)
     if metodo == "punto_fijo":
-        return punto_fijo(funcion["g"], f, x0, TOL, MAX_ITER)
+        return punto_fijo(datos_funcion["punto_fijo"], calcular, inicio, TOLERANCIA, MAX_ITERACIONES)
     if metodo == "secante":
-        return secante(f, x0, x1, TOL, MAX_ITER)
+        return secante(calcular, inicio, segundo_inicio, TOLERANCIA, MAX_ITERACIONES)
     if metodo == "newton":
-        return newton(f, funcion["df"], x0, TOL, MAX_ITER)
-    return newton_mejorado(f, funcion["df"], funcion["d2f"], x0, TOL, MAX_ITER)
+        return newton(calcular, datos_funcion["derivada"], inicio, TOLERANCIA, MAX_ITERACIONES)
+    return newton_mejorado(calcular, datos_funcion["derivada"], datos_funcion["segunda_derivada"], inicio, TOLERANCIA, MAX_ITERACIONES)
 
 
 def estado_historial(historial):
     if not historial:
         return "no aplica"
-    if abs(historial[-1][2]) < TOL or (len(historial) > 1 and abs(historial[-1][1] - historial[-2][1]) < TOL):
+    if abs(historial[-1][2]) < TOLERANCIA or (len(historial) > 1 and abs(historial[-1][1] - historial[-2][1]) < TOLERANCIA):
         return "convergió"
     return "no convergió"
 
 
 def guardar_curva(funcion, raiz, indice):
-    f = funcion["f"]
+    calcular = funcion["funcion"]
     if funcion["a"] is None:
-        xs = np.linspace(0.5, 3.5, 200)
+        valores_x = np.linspace(0.5, 3.5, 200)
     else:
-        xs = np.linspace(funcion["a"], funcion["b"], 200)
-    ys = [f(x) for x in xs]
-    with open(os.path.join(DATOS, "funcion_" + str(indice + 1) + ".csv"), "w", newline="", encoding="utf-8") as archivo:
+        valores_x = np.linspace(funcion["a"], funcion["b"], 200)
+    valores_y = [calcular(x) for x in valores_x]
+    with open(os.path.join(CARPETA_DATOS, "funcion_" + str(indice + 1) + ".csv"), "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
         escritor.writerow(["x", "f(x)"])
-        for x, y in zip(xs, ys):
-            escritor.writerow([x, y])
+        for x, valor_y in zip(valores_x, valores_y):
+            escritor.writerow([x, valor_y])
     plt.figure()
-    plt.plot(xs, ys, label="f(x)")
+    plt.plot(valores_x, valores_y, label="f(x)")
     plt.axhline(0, color="black", linewidth=0.8)
-    plt.scatter([raiz], [f(raiz)], color="red", label="raíz")
+    plt.scatter([raiz], [calcular(raiz)], color="red", label="raíz")
     plt.title(funcion["nombre"])
     plt.xlabel("x")
     plt.ylabel("f(x)")
     plt.legend()
     plt.grid(True)
-    plt.savefig(os.path.join(IMAGENES, "funcion_" + str(indice + 1) + ".png"))
+    plt.savefig(os.path.join(CARPETA_GRAFICOS, "funcion_" + str(indice + 1) + ".png"))
     plt.close()
 
 
 def main():
-    os.makedirs(DATOS, exist_ok=True)
-    os.makedirs(IMAGENES, exist_ok=True)
-    lista = funciones()
+    os.makedirs(CARPETA_DATOS, exist_ok=True)
+    os.makedirs(CARPETA_GRAFICOS, exist_ok=True)
+    lista_funciones = funciones()
     resumen = []
     historiales = {}
     raices = {}
-    for j, funcion in enumerate(lista):
+    for indice, funcion in enumerate(lista_funciones):
         raiz = raiz_real(funcion)
         raices[funcion["nombre"]] = raiz
-        print("\n", funcion["nombre"], "tol=", TOL)
+        print("\n", funcion["nombre"], "tolerancia=", TOLERANCIA)
         if funcion["a"] is None:
-            print("x0=", funcion["x0"], "f(2)=", funcion["f"](2), "f'(2)=", funcion["df"](2), "f(x)>=0: sí")
+            print("inicio=", funcion["x_inicial"], "f(2)=", funcion["funcion"](2), "f'(2)=", funcion["derivada"](2), "f(x)>=0: sí")
         else:
             a, b = funcion["a"], funcion["b"]
-            print("intervalo=", (a, b), "f(a)=", funcion["f"](a), "f(b)=", funcion["f"](b), "f(a)*f(b)<0:", funcion["f"](a)*funcion["f"](b) < 0)
-        guardar_curva(funcion, raiz, j)
+            print("intervalo=", (a, b), "f(a)=", funcion["funcion"](a), "f(b)=", funcion["funcion"](b), "f(a)*f(b)<0:", funcion["funcion"](a)*funcion["funcion"](b) < 0)
+        guardar_curva(funcion, raiz, indice)
         for metodo in METODOS:
-            historial = ejecutar_metodo(metodo, funcion, funcion["a"], funcion["b"], funcion["x0"], funcion["x1"])
+            historial = ejecutar_metodo(metodo, funcion, funcion["a"], funcion["b"], funcion["x_inicial"], funcion["segundo_inicio"])
             estado = estado_historial(historial)
             x = historial[-1][1] if historial else ""
             error = abs(x - raiz) if historial else ""
             resumen.append([funcion["nombre"], metodo, len(historial), x, error, estado])
             historiales[(funcion["nombre"], metodo)] = historial
-    with open(os.path.join(DATOS, "resumen_convergencia.csv"), "w", newline="", encoding="utf-8") as archivo:
+    with open(os.path.join(CARPETA_DATOS, "resumen_convergencia.csv"), "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
         escritor.writerow(["funcion", "metodo", "iteraciones", "raiz", "error", "estado"])
         escritor.writerows(resumen)
 
-    for i, funcion in enumerate(lista):
+    for indice, funcion in enumerate(lista_funciones):
         plt.figure()
         for metodo in METODOS:
             historial = historiales[(funcion["nombre"], metodo)]
@@ -131,33 +129,33 @@ def main():
         plt.ylabel("|error|")
         plt.legend()
         plt.grid(True)
-        plt.savefig(os.path.join(IMAGENES, "error_" + str(i + 1) + ".png"))
+        plt.savefig(os.path.join(CARPETA_GRAFICOS, "error_" + str(indice + 1) + ".png"))
         plt.close()
 
     plt.figure(figsize=(12, 6))
-    posiciones = np.arange(len(lista))
+    posiciones = np.arange(len(lista_funciones))
     ancho = 0.13
-    for k, metodo in enumerate(METODOS):
-        valores = [next((fila[2] for fila in resumen if fila[0] == f["nombre"] and fila[1] == metodo), 0) for f in lista]
-        plt.bar(posiciones + k*ancho, valores, ancho, label=metodo)
-    plt.xticks(posiciones + ancho*2.5, [f["nombre"] for f in lista], rotation=20, ha="right")
+    for indice, metodo in enumerate(METODOS):
+        iteraciones_grafico = [fila[2] for fila in resumen if fila[1] == metodo]
+        plt.bar(posiciones + indice*ancho, iteraciones_grafico, ancho, label=metodo)
+    plt.xticks(posiciones + ancho*2.5, [funcion["nombre"] for funcion in lista_funciones], rotation=20, ha="right")
     plt.title("Iteraciones por método y función")
     plt.xlabel("Función")
     plt.ylabel("Iteraciones")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(os.path.join(IMAGENES, "iteraciones_metodos.png"))
+    plt.savefig(os.path.join(CARPETA_GRAFICOS, "iteraciones_metodos.png"))
     plt.close()
 
     sensibilidad = []
-    casos = [(lista[0], [(1, 2), (0, 1), (1.5, 2)]), (lista[3], [(0, 1), (2, 3), (-1, 1)]), (lista[1], [(1.2, 1.2), (2.5, 2.5), (5, 5)])]
+    casos = [(lista_funciones[0], [(1, 2), (0, 1), (1.5, 2)]), (lista_funciones[3], [(0, 1), (2, 3), (-1, 1)]), (lista_funciones[1], [(1.2, 1.2), (2.5, 2.5), (5, 5)])]
     for funcion, pruebas in casos:
-        for p, q in pruebas:
+        for inicio, segundo_inicio in pruebas:
             for metodo in ["biseccion", "newton"]:
-                h = ejecutar_metodo(metodo, funcion, p, q, p, q + 0.1)
-                estado = estado_historial(h)
-                sensibilidad.append([funcion["nombre"], metodo, p, q, len(h), estado])
-    with open(os.path.join(DATOS, "sensibilidad.csv"), "w", newline="", encoding="utf-8") as archivo:
+                historial = ejecutar_metodo(metodo, funcion, inicio, segundo_inicio, inicio, segundo_inicio + 0.1)
+                estado = estado_historial(historial)
+                sensibilidad.append([funcion["nombre"], metodo, inicio, segundo_inicio, len(historial), estado])
+    with open(os.path.join(CARPETA_DATOS, "sensibilidad.csv"), "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
         escritor.writerow(["funcion", "metodo", "inicio_a_x0", "fin_x1", "iteraciones", "estado"])
         escritor.writerows(sensibilidad)
