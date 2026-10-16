@@ -4,14 +4,14 @@ Se usó tolerancia `1e-6` y máximo 100 iteraciones. La raíz de referencia se c
 
 ## Ambiente
 
-| Función | Intervalo / inicio | f(a) | f(b) | Cambio de signo |
-|---|---:|---:|---:|---|
-| x³ − x − 2 | [1, 2] | -2 | 4 | sí |
-| (x − 2)² | x0=1.2 | — | — | no; f(2)=0, f'(2)=0, f(x)≥0 |
-| ln(x) + x − 4 | [2, 3] | -1.306853 | 0.098612 | sí |
-| exp(−x) − x | [0, 1] | 1 | -0.632121 | sí |
-| cos(x) − x | [0, 1] | 1 | -0.459698 | sí |
-| √x − cos(x) | [0.1, 1] | -0.678776 | 0.459698 | sí |
+| Función | Intervalo | x0 | x1 | f(a) | f(b) | Cambio de signo |
+|---|---:|---:|---:|---:|---:|---|
+| x³ − x − 2 | [1, 2] | 1.5 | 1.6 | -2 | 4 | sí |
+| (x − 2)² | — | 1.2 | 1.3 | — | — | no; f(2)=0, f'(2)=0, f(x)≥0 |
+| ln(x) + x − 4 | [2, 3] | 2.5 | 2.6 | -1.306853 | 0.098612 | sí |
+| exp(−x) − x | [0, 1] | 0.5 | 0.6 | 1 | -0.632121 | sí |
+| cos(x) − x | [0, 1] | 0.5 | 0.6 | 1 | -0.459698 | sí |
+| √x − cos(x) | [0.1, 1] | 0.5 | 0.6 | -0.678776 | 0.459698 | sí |
 
 ## Iteraciones
 
@@ -22,9 +22,20 @@ Se usó tolerancia `1e-6` y máximo 100 iteraciones. La raíz de referencia se c
 | ln(x) + x − 4 | 19 | 4 | 13 | 3 | 3 | 3 |
 | exp(−x) − x | 20 | 7 | 21 | 3 | 2 | 2 |
 | cos(x) − x | 20 | 5 | 33 | 3 | 3 | 3 |
-| √x − cos(x) | 20 | 4 | 100* | 3 | 2 | 2 |
+| √x − cos(x) | 20 | 4 | 13 | 3 | 2 | 2 |
 
-`N/A`: el método no aplica por falta de intervalo con cambio de signo. `*`: no convergió en 100 iteraciones. El detalle de raíces, errores y estados está en [resumen_convergencia.csv](src/data/resumen_convergencia.csv); las pruebas de inicios están en [sensibilidad.csv](src/data/sensibilidad.csv).
+`N/A`: el método no aplica por falta de intervalo con cambio de signo. Los errores finales por método y función son:
+
+| Función | Bisección | Falsa posición | Punto fijo | Secante | Newton | Newton mejorado |
+|---|---:|---:|---:|---:|---:|---:|
+| x³ − x − 2 | 7.17695e-7 | 2.45014e-7 | 2.75331e-8 | 6.96131e-8 | 9.91603e-8 | 9.73089e-8 |
+| (x − 2)² | N/A | N/A | 7.81250e-4 | 7.44779e-4 | 7.81250e-4 | 0 |
+| ln(x) + x − 4 | 3.76155e-7 | 4.19379e-7 | 3.91587e-7 | 3.23433e-8 | 5.77316e-13 | 1.48059e-12 |
+| exp(−x) − x | 1.49837e-7 | 8.56248e-8 | 4.61008e-7 | 1.72990e-10 | 1.25374e-7 | 1.36984e-7 |
+| cos(x) − x | 6.42340e-8 | 3.50766e-7 | 4.60654e-7 | 5.74902e-7 | 7.06049e-10 | 1.04938e-9 |
+| √x − cos(x) | 1.12992e-8 | 5.31698e-7 | 6.82749e-7 | 2.95272e-10 | 4.95920e-7 | 1.14620e-7 |
+
+El detalle de raíces, errores y estados está en [resumen_convergencia.csv](src/data/resumen_convergencia.csv); el orden observado está en [orden_convergencia.csv](src/data/orden_convergencia.csv) y las pruebas de inicios están en [sensibilidad.csv](src/data/sensibilidad.csv).
 
 ## Gráficos
 
