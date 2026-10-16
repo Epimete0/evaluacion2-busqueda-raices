@@ -49,7 +49,8 @@ def funciones():
             "funcion": lambda x: np.sqrt(x) - np.cos(x),
             "derivada": lambda x: 1/(2*np.sqrt(x)) + np.sin(x),
             "segunda_derivada": lambda x: -1/(4*x**1.5) + np.cos(x),
-            "punto_fijo": lambda x: np.cos(x)**2,
+            # Relajación para que |g'| sea cercano a 0.4 en la raíz.
+            "punto_fijo": lambda x: x - 0.5*(np.sqrt(x) - np.cos(x)),
             "a": 0.1, "b": 1, "x_inicial": 0.5, "segundo_inicio": 0.6,
         },
     ]
