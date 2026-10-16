@@ -14,6 +14,7 @@ CARPETA_DATOS = os.path.join(CARPETA_SRC, "data")
 CARPETA_GRAFICOS = os.path.join(CARPETA_SRC, "assets")
 TOLERANCIA = 1e-6
 MAX_ITERACIONES = 100
+TOLERANCIA_REFERENCIA = 1e-15
 METODOS = ["biseccion", "falsa_posicion", "punto_fijo", "secante", "newton", "newton_mejorado"]
 
 
@@ -24,7 +25,7 @@ def raiz_real(funcion):
     a, b = funcion["a"], funcion["b"]
     for iteracion in range(1000):
         medio = (a + b) / 2
-        if abs(calcular(medio)) < 1e-12 or abs(b - a) < 1e-12:
+        if abs(calcular(medio)) < TOLERANCIA_REFERENCIA or abs(b - a) < TOLERANCIA_REFERENCIA:
             return medio
         if calcular(a) * calcular(medio) < 0:
             b = medio
@@ -60,7 +61,11 @@ def estimar_orden(historial, raiz):
     if len(errores) < 3:
         return ""
     e_anterior, e_actual, e_siguiente = errores[-3:]
-    return np.log(e_siguiente / e_actual) / np.log(e_actual / e_anterior)
+    divisor = np.log(e_actual / e_anterior)
+    if divisor == 0 or e_siguiente == e_actual:
+        return ""
+    orden = np.log(e_siguiente / e_actual) / divisor
+    return orden if np.isfinite(orden) else ""
 
 
 def estado_historial(historial):

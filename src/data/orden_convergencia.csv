@@ -1,8 +1,8 @@
 funcion,metodo,orden_observado
-x^3 - x - 2,biseccion,-0.0
-x^3 - x - 2,falsa_posicion,1.0957986449714068
-x^3 - x - 2,punto_fijo,1.1042171004078931
-x^3 - x - 2,secante,1.4123752205432385
+x^3 - x - 2,biseccion,-0.03912299150362903
+x^3 - x - 2,falsa_posicion,0.9996987114204304
+x^3 - x - 2,punto_fijo,0.9997198754903759
+x^3 - x - 2,secante,1.410195604461159
 x^3 - x - 2,newton,
 x^3 - x - 2,newton_mejorado,
 (x - 2)^2,biseccion,
@@ -11,27 +11,27 @@ x^3 - x - 2,newton_mejorado,
 (x - 2)^2,secante,1.0000000003657377
 (x - 2)^2,newton,1.0000000001049698
 (x - 2)^2,newton_mejorado,
-ln(x) + x - 4,biseccion,-0.0
-ln(x) + x - 4,falsa_posicion,0.8893149697974014
-ln(x) + x - 4,punto_fijo,1.2928441672849214
-ln(x) + x - 4,secante,1.931700763307599
-ln(x) + x - 4,newton,2.0117179400294574
-ln(x) + x - 4,newton_mejorado,1.9938848821219872
-exp(-x) - x,biseccion,-0.0
-exp(-x) - x,falsa_posicion,0.5126269659879575
-exp(-x) - x,punto_fijo,-0.6347924984834475
-exp(-x) - x,secante,0.5885838940957119
-exp(-x) - x,newton,1.3859997498832441
-exp(-x) - x,newton_mejorado,1.4019176813338652
-cos(x) - x,biseccion,1.2966069431192224
-cos(x) - x,falsa_posicion,0.5714589647667633
-cos(x) - x,punto_fijo,-0.5112232654837815
-cos(x) - x,secante,0.4708604643296708
-cos(x) - x,newton,0.6614744836054263
-cos(x) - x,newton_mejorado,0.7089894683820294
-sqrt(x) - cos(x),biseccion,-3.0864142618197974e-05
-sqrt(x) - cos(x),falsa_posicion,0.5799093961051892
-sqrt(x) - cos(x),punto_fijo,1.1987321433153815
-sqrt(x) - cos(x),secante,0.6919699565511154
-sqrt(x) - cos(x),newton,1.6715051110720922
-sqrt(x) - cos(x),newton_mejorado,1.3808962004398464
+ln(x) + x - 4,biseccion,0.0750069372596933
+ln(x) + x - 4,falsa_posicion,0.9986735545923302
+ln(x) + x - 4,punto_fijo,0.9998726281894145
+ln(x) + x - 4,secante,1.5178302547198779
+ln(x) + x - 4,newton,2.000405649648749
+ln(x) + x - 4,newton_mejorado,1.9987034843187124
+exp(-x) - x,biseccion,4.404584562369827
+exp(-x) - x,falsa_posicion,1.0001004795965212
+exp(-x) - x,punto_fijo,1.0006332623235823
+exp(-x) - x,secante,1.8576985525056284
+exp(-x) - x,newton,
+exp(-x) - x,newton_mejorado,
+cos(x) - x,biseccion,1.760122154230208
+cos(x) - x,falsa_posicion,0.9992254825901647
+cos(x) - x,punto_fijo,0.9962631101130448
+cos(x) - x,secante,1.5471044272800927
+cos(x) - x,newton,1.9970095677980688
+cos(x) - x,newton_mejorado,2.0051129509786048
+sqrt(x) - cos(x),biseccion,6.660237039398281
+sqrt(x) - cos(x),falsa_posicion,1.0020022191770854
+sqrt(x) - cos(x),punto_fijo,1.0005176943549141
+sqrt(x) - cos(x),secante,1.7856963622203463
+sqrt(x) - cos(x),newton,
+sqrt(x) - cos(x),newton_mejorado,
