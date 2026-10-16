@@ -33,25 +33,34 @@ def raiz_real(funcion):
     return medio
 
 
-def ejecutar_metodo(metodo, datos_funcion, a=None, b=None, inicio=None, segundo_inicio=None):
+def ejecutar_metodo(metodo, datos_funcion, a=None, b=None, inicio=None, segundo_inicio=None,
+                    tolerancia=TOLERANCIA, max_iteraciones=MAX_ITERACIONES):
     calcular = datos_funcion["funcion"]
     if metodo == "biseccion":
         if a is None or b is None:
             print("Bisección no aplica: función sin intervalo")
             return []
-        return biseccion(calcular, a, b, TOLERANCIA, MAX_ITERACIONES)
+        return biseccion(calcular, a, b, tolerancia, max_iteraciones)
     if metodo == "falsa_posicion":
         if a is None or b is None:
             print("Falsa posición no aplica: función sin intervalo")
             return []
-        return falsa_posicion(calcular, a, b, TOLERANCIA, MAX_ITERACIONES)
+        return falsa_posicion(calcular, a, b, tolerancia, max_iteraciones)
     if metodo == "punto_fijo":
-        return punto_fijo(datos_funcion["punto_fijo"], calcular, inicio, TOLERANCIA, MAX_ITERACIONES)
+        return punto_fijo(datos_funcion["punto_fijo"], calcular, inicio, tolerancia, max_iteraciones)
     if metodo == "secante":
-        return secante(calcular, inicio, segundo_inicio, TOLERANCIA, MAX_ITERACIONES)
+        return secante(calcular, inicio, segundo_inicio, tolerancia, max_iteraciones)
     if metodo == "newton":
-        return newton(calcular, datos_funcion["derivada"], inicio, TOLERANCIA, MAX_ITERACIONES)
-    return newton_mejorado(calcular, datos_funcion["derivada"], datos_funcion["segunda_derivada"], inicio, TOLERANCIA, MAX_ITERACIONES)
+        return newton(calcular, datos_funcion["derivada"], inicio, tolerancia, max_iteraciones)
+    return newton_mejorado(calcular, datos_funcion["derivada"], datos_funcion["segunda_derivada"], inicio, tolerancia, max_iteraciones)
+
+
+def estimar_orden(historial, raiz):
+    errores = [abs(punto[1] - raiz) for punto in historial if abs(punto[1] - raiz) > 1e-13]
+    if len(errores) < 3:
+        return ""
+    e_anterior, e_actual, e_siguiente = errores[-3:]
+    return np.log(e_siguiente / e_actual) / np.log(e_actual / e_anterior)
 
 
 def estado_historial(historial):
@@ -115,6 +124,20 @@ def main():
         escritor = csv.writer(archivo)
         escritor.writerow(["funcion", "metodo", "iteraciones", "raiz", "error_final", "estado"])
         escritor.writerows(resumen)
+
+    # Corrida separada a tolerancia estricta, solo para estimar el orden.
+    ordenes = []
+    for funcion in lista_funciones:
+        raiz = raices[funcion["nombre"]]
+        for metodo in METODOS:
+            historial = ejecutar_metodo(metodo, funcion, funcion["a"], funcion["b"],
+                                        funcion["x_inicial"], funcion["segundo_inicio"],
+                                        tolerancia=1e-12, max_iteraciones=100)
+            ordenes.append([funcion["nombre"], metodo, estimar_orden(historial, raiz)])
+    with open(os.path.join(CARPETA_DATOS, "orden_convergencia.csv"), "w", newline="", encoding="utf-8") as archivo:
+        escritor = csv.writer(archivo)
+        escritor.writerow(["funcion", "metodo", "orden_observado"])
+        escritor.writerows(ordenes)
 
     for indice, funcion in enumerate(lista_funciones):
         plt.figure()
