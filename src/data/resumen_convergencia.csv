@@ -1,0 +1,37 @@
+funcion,metodo,iteraciones,raiz,error,estado
+x^3 - x - 2,biseccion,20,1.5213804244995117,7.176950020948425e-07,convergió
+x^3 - x - 2,falsa_posicion,12,1.5213794617901568,2.450143528065496e-07,convergió
+x^3 - x - 2,punto_fijo,7,1.5213796792714414,2.753306826974722e-08,convergió
+x^3 - x - 2,secante,3,1.5213797764176016,6.961309195752108e-08,convergió
+x^3 - x - 2,newton,2,1.5213798059647863,9.916027665646254e-08,convergió
+x^3 - x - 2,newton_mejorado,2,1.5213796094955705,9.730893912873739e-08,convergió
+(x - 2)^2,biseccion,0,,,no aplica
+(x - 2)^2,falsa_posicion,0,,,no aplica
+(x - 2)^2,punto_fijo,10,1.99921875,0.0007812499999999556,convergió
+(x - 2)^2,secante,14,1.999255220109057,0.0007447798909430148,convergió
+(x - 2)^2,newton,10,1.99921875,0.0007812499999999556,convergió
+(x - 2)^2,newton_mejorado,1,2.0,0.0,convergió
+ln(x) + x - 4,biseccion,19,2.926271438598633,3.7615518522216007e-07,convergió
+ln(x) + x - 4,falsa_posicion,4,2.926271481822187,4.1937873929143166e-07,convergió
+ln(x) + x - 4,punto_fijo,13,2.9262714540300196,3.9158657205717873e-07,convergió
+ln(x) + x - 4,secante,3,2.9262710301001666,3.234328094237071e-08,convergió
+ln(x) + x - 4,newton,3,2.9262710624428703,5.773159728050814e-13,convergió
+ln(x) + x - 4,newton_mejorado,3,2.926271062444928,1.4805934256401088e-12,convergió
+exp(-x) - x,biseccion,20,0.567143440246582,1.4983743312768638e-07,convergió
+exp(-x) - x,falsa_posicion,7,0.5671433760339215,8.562477260554147e-08,convergió
+exp(-x) - x,punto_fijo,21,0.5671437514174078,4.6100825890071917e-07,convergió
+exp(-x) - x,secante,3,0.5671432905821386,1.7298973364887615e-10,convergió
+exp(-x) - x,newton,2,0.5671431650348622,1.2537428673020656e-07,convergió
+exp(-x) - x,newton_mejorado,2,0.5671434273931901,1.369840412213108e-07,convergió
+cos(x) - x,biseccion,20,0.7390851974487305,6.423397280741483e-08,convergió
+cos(x) - x,falsa_posicion,5,0.7390847824489231,3.507658346002529e-07,convergió
+cos(x) - x,punto_fijo,33,0.7390855938689606,4.606542028939842e-07,convergió
+cos(x) - x,secante,3,0.739084558312839,5.749019186263027e-07,convergió
+cos(x) - x,newton,3,0.7390851339208068,7.060491080679299e-10,convergió
+cos(x) - x,newton_mejorado,3,0.7390851321653727,1.0493849122994447e-09,convergió
+sqrt(x) - cos(x),biseccion,20,0.641714382171631,1.129919835474169e-08,convergió
+sqrt(x) - cos(x),falsa_posicion,4,0.6417138391748604,5.316975723035355e-07,convergió
+sqrt(x) - cos(x),punto_fijo,100,0.6399108034541754,0.001803567418257268,no convergió
+sqrt(x) - cos(x),secante,3,0.6417143705771605,2.9527214007174507e-10,convergió
+sqrt(x) - cos(x),newton,2,0.641714866792004,4.959195712972431e-07,convergió
+sqrt(x) - cos(x),newton_mejorado,2,0.6417142562525041,1.1461992854844283e-07,convergió
